@@ -5,7 +5,6 @@ Measures execution time for each operator/layer in the model.
 
 Usage:
     python benchmark_detailed.py <folder_name>
-    python benchmark_detailed.py glm_asr_cutile_example --profile
     python benchmark_detailed.py glm_asr_cutile_template --nsys
     python benchmark_detailed.py glm_asr_triton_example
 """
@@ -849,7 +848,7 @@ def print_summary(component_results, attention_results, linear_results):
             print(f"  {'Full MLP (SwiGLU)':<25} {linear_results['full_mlp']:>10.2f}ms")
 
 
-def run_nsys_profile(folder, audio_path=None):
+def run_nsys_profile(folder, audio_path=None, runs=1):
     """Run Nsight Systems profiling."""
     import subprocess
 
@@ -862,7 +861,7 @@ def run_nsys_profile(folder, audio_path=None):
         "--output", output_name,
         "--force-overwrite", "true",
         "python", os.path.join(script_dir, "benchmark_student.py"),
-        folder, "--warmup", "1", "--runs", "1"
+        folder, "--warmup", "1", "--runs", str(runs)
     ]
 
     if audio_path:
@@ -881,8 +880,6 @@ def main():
     parser.add_argument('--audio', type=str, help='Path to test audio file')
     parser.add_argument('--runs', type=int, default=3, help='Number of profiling runs')
     parser.add_argument('--nsys', action='store_true', help='Run Nsight Systems profiling')
-    parser.add_argument('--attention-only', action='store_true', help='Only profile attention ops')
-    parser.add_argument('--linear-only', action='store_true', help='Only profile linear ops')
     parser.add_argument('--seq-len', type=int, default=256, help='Sequence length for micro-benchmarks')
     args = parser.parse_args()
 
@@ -892,25 +889,10 @@ def main():
 
     # Run nsys if requested
     if args.nsys:
-        run_nsys_profile(args.folder, args.audio)
+        run_nsys_profile(args.folder, args.audio, args.runs)
         return 0
 
     use_torch_backend = 'triton' in args.folder.lower()
-
-    # Micro-benchmarks only
-    if args.attention_only:
-        if use_torch_backend:
-            profile_attention_ops_torch(seq_len=args.seq_len, num_runs=args.runs)
-        else:
-            profile_attention_ops(None, seq_len=args.seq_len, num_runs=args.runs)
-        return 0
-
-    if args.linear_only:
-        if use_torch_backend:
-            profile_linear_ops_torch(seq_len=args.seq_len, num_runs=args.runs)
-        else:
-            profile_linear_ops(seq_len=args.seq_len, num_runs=args.runs)
-        return 0
 
     # Full profiling
 

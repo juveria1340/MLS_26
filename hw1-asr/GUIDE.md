@@ -427,11 +427,12 @@ Compare your performance against the example baseline:
 ./benchmark_detailed.sh glm_asr_cutile_example
 ```
 
-Profile specific operators:
+Tune profiling parameters:
 
 ```bash
-./benchmark_detailed.sh --attention-only
-./benchmark_detailed.sh --linear-only
+./benchmark_detailed.sh glm_asr_triton_template --runs 5
+./benchmark_detailed.sh glm_asr_triton_template --seq-len 512
+./benchmark_detailed.sh glm_asr_triton_template --audio /path/to/test_audio.wav
 ```
 
 Generate an Nsight Systems profile:
