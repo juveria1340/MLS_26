@@ -31,4 +31,4 @@ source ~/.bashrc
 conda activate mlsys
 
 # Start a single pylet worker that exposes 2 GPUs to the head
-pylet start --head "${HEAD_NODE}:${HEAD_PORT}" --gpu-units 2 --memory-mb 8192 --cpu-units 8
+pylet start --head "${HEAD_NODE}:${HEAD_PORT}" --gpu-units 2 --memory-mb 8192 --cpu-cores 8
