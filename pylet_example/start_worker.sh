@@ -1,9 +1,10 @@
 #!/bin/bash
 #SBATCH --job-name=pylet-worker
-#SBATCH --partition=Open-Research
+#SBATCH --partition=Teaching
+#SBATCH --nodelist=saxa
 #SBATCH --gres=gpu:2
 #SBATCH --mem=32G
-#SBATCH --time=01:00:00
+#SBATCH --time=02:00:00
 #SBATCH --output=pylet-worker-%j.out
 
 # ──────────────────────────────────────────────
@@ -30,4 +31,4 @@ source ~/.bashrc
 conda activate mlsys
 
 # Start a single pylet worker that exposes 2 GPUs to the head
-pylet start --head "${HEAD_NODE}:${HEAD_PORT}" --gpu-units 2 --memory-mb 16384 --cpu-units 32
+pylet start --head "${HEAD_NODE}:${HEAD_PORT}" --gpu-units 2 --memory-mb 8192 --cpu-units 8
