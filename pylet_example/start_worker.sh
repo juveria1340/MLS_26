@@ -16,7 +16,7 @@
 # ──────────────────────────────────────────────
 
 # Change this if your login node hostname differs
-HEAD_NODE="${HEAD_NODE:-gala2}"
+HEAD_NODE="${HEAD_NODE:-hastings}"
 HEAD_PORT="${HEAD_PORT:-8000}"
 
 echo "=== PyLet Worker ==="
