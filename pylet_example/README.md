@@ -40,7 +40,7 @@ echo 'export LIBRARY_PATH=$CONDA_PREFIX/lib:$CONDA_PREFIX/lib/stubs:$LIBRARY_PAT
 pylet start
 ```
 
-This starts the PyLet scheduler on `gala2:8000`.
+This starts the PyLet scheduler on `hastings:8000`.
 
 ### 2. Submit the SLURM worker (Login Node — Terminal 2)
 
